@@ -92,6 +92,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    grid-auto-rows: 1fr;
 }
 
 .pokemon-slot {
@@ -99,13 +100,11 @@
     display: flex;
     padding: 4px;
     align-items: center;
-    min-height: 64px;
 }
 
 .empty-slot {
     justify-content: center;
     color: var(--input-contrast-color);
-    min-height: 64px;
     font-size: 11px;
     font-weight: bold;
     opacity: 0.6;

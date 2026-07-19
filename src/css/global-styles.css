@@ -89,6 +89,7 @@ input {
     padding: var(--default-tiny-button-padding);
     border: 0;
     border-bottom: 2px dashed var(--input-contrast-color);
+    width: 100%;
 }
 
 html {
