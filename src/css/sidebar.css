@@ -8,7 +8,6 @@ nav {
     display: flex;
     flex-direction: column;
     height: 100%;
-    /* max-height: calc(100% - var(--default-padding) * 2); */
     width: fit-content;
     background-color: var(--glass-color);
     padding: var(--default-padding);
@@ -47,47 +46,47 @@ nav button:hover {
 
 @media screen and (max-width: 720px) {
     main {
-        padding-top: 96px !important;
+        padding-bottom: var(--default-padding) !important;
+        padding-top: 80px !important;
     }
 
     nav {
         position: fixed;
-        height: auto;
+        top: 0;
+        left: 0;
+        bottom: auto;
+        max-height: 64px;
         width: 100%;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        border-bottom: 2px dashed var(--input-color);
     }
 
-    nav div {
-        flex-direction: row;
-        align-items: center;
-        max-height: fit-content;
-        max-width: fit-content;
+    .nav-header,
+    nav hr,
+    nav div.expand {
+        display: none;
     }
 
-    .nav-header {
-        gap: 0;
-        align-items: start;
+    nav div:nth-of-type(2) {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        flex-grow: 1;
+        gap: 4px;
+        max-width: 100%;
     }
 
     nav button {
-        border-bottom: 4px solid var(--input-color);
+        border-bottom: 2px solid var(--input-color);
         border-right: none;
-        background: none;
+        background: rgba(255, 255, 255, 0.05);
         text-align: center;
-    }
-
-    nav div.expand,
-    nav hr {
-        display: none;
-    }
-
-    nav h1 {
-        display: none;
-    }
-
-    h1 {
-        font-size: clamp(1rem, 1vw, 3rem);
+        padding: 8px 4px;
+        font-size: 12px;
+        font-weight: normal;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }

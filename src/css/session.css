@@ -3,7 +3,6 @@
     align-items: center;
 }
 
-
 .header-card .last-saved {
     border: 2px dashed var(--input-contrast-color);
     padding: 4px 8px;
@@ -15,6 +14,7 @@
 .plus-button {
     width: 32px;
     height: 32px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -49,10 +49,9 @@
     color: var(--input-contrast-color);
 }
 
-.donut-hp {
+.hp-donut {
     width: 110px;
     height: 110px;
-    border-radius: 50%;
     background: conic-gradient(var(--green-color) var(--percentage), rgba(0, 0, 0, 0.1) 0);
     display: flex;
     justify-content: center;
@@ -60,10 +59,9 @@
     position: relative;
 }
 
-.donut-hp::before {
+.hp-donut::before {
     content: "";
     position: absolute;
-    border-radius: 50%;
     width: 82px;
     height: 82px;
     background: var(--container-color);
@@ -100,14 +98,20 @@
     display: flex;
     padding: 4px;
     align-items: center;
+
+    background-color: transparent;
+    min-width: 100%;
+    text-align: left;
+    font-family: inherit;
+
+    color: var(--input-contrast-color);
 }
 
 .empty-slot {
     justify-content: center;
-    color: var(--input-contrast-color);
     font-size: 11px;
     font-weight: bold;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .active-slot {
@@ -173,23 +177,43 @@
     opacity: 0.7;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 900px) {
+    .pokemon-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 800px) {
     .main-grid {
         grid-template-columns: 1fr;
     }
 
     .pokemon-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .health-layout {
-        justify-content: center;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
         height: auto;
+    }
+
+    .maximum-health-box {
+        margin-bottom: 0;
     }
 
     .current-health-box {
         position: relative;
-        align-items: center;
+        right: auto;
+        bottom: auto;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .pokemon-grid {
+        grid-template-columns: 1fr;
     }
 }

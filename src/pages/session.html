@@ -69,7 +69,7 @@
                 <h2>Player Health</h2>
                 <hr>
                 <div class="static-row health-layout">
-                    <div class="donut-hp" style="--percentage: 100%;">
+                    <div class="hp-donut" style="--percentage: 100%;">
                         <div class="donut-text">
                             <span>100%</span>
                             <small>5/5</small>
@@ -98,8 +98,8 @@
                 </div>
                 <hr>
                 <div class="pokemon-grid">
-                    <!-- Slot Ativo -->
-                    <div class="pokemon-slot active-slot">
+                    <!-- Active slots -->
+                    <button class="pokemon-slot active-slot">
                         <div class="pokemon-image-placeholder"></div>
                         <div class="column pokemon-info">
                             <div class="static-row align-between">
@@ -114,13 +114,28 @@
                                 <span>Happiness 5/10</span>
                             </div>
                         </div>
-                    </div>
+                    </button>
+                    <button class="pokemon-slot active-slot">
+                        <div class="pokemon-image-placeholder"></div>
+                        <div class="column pokemon-info">
+                            <div class="static-row align-between">
+                                <h5>Pokémon Name</h5>
+                                <h6>LVL 12</h6>
+                            </div>
+                            <div class="health-bar-container">
+                                <div class="health-bar-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="static-row align-between tiny-text">
+                                <span>HP 12/12</span>
+                                <span>Happiness 5/10</span>
+                            </div>
+                        </div>
+                    </button>
                     <!-- Slots Vazios -->
-                    <div class="pokemon-slot empty-slot">(+) Empty</div>
-                    <div class="pokemon-slot empty-slot">(+) Empty</div>
-                    <div class="pokemon-slot empty-slot">(+) Empty</div>
-                    <div class="pokemon-slot empty-slot">(+) Empty</div>
-                    <div class="pokemon-slot empty-slot">(+) Empty</div>
+                    <button class="pokemon-slot empty-slot">(+) Empty</button>
+                    <button class="pokemon-slot empty-slot">(+) Empty</button>
+                    <button class="pokemon-slot empty-slot">(+) Empty</button>
+                    <button class="pokemon-slot empty-slot">(+) Empty</button>
                 </div>
             </div>
 
