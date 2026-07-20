@@ -1,0 +1,264 @@
+/* BASE MODAL STRUCTURE */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--glass-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    padding: var(--default-padding);
+}
+
+.modal-card {
+    width: 65%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-overlay.hidden {
+    display: none !important;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--input-contrast-color);
+}
+
+/* MODAL 1: INVENTORY */
+
+.inventory-section {
+    gap: 0px !important;
+    display: flex;
+    flex: 1;
+}
+
+#inventory-items-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.inventory-item-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+}
+
+.inventory-item-input {
+    flex-grow: 1;
+    height: 32px;
+    min-width: 0;
+}
+
+.inventory-qty-input {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    font-weight: bold;
+    background-color: var(--background-color);
+    color: var(--white-color);
+    padding: var(--default-tiny-button-padding);
+    border: none;
+}
+
+.inventory-qty-input::-webkit-outer-spin-button,
+.inventory-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inventory-qty-input {
+    -moz-appearance: textfield;
+}
+
+.item-delete-btn {
+    background-color: transparent;
+    color: var(--red-color);
+    border: 2px solid var(--red-color);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+
+/* MODAL 2: POKÉMON MANAGEMENT */
+
+.pokemon-detail-panel {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+}
+
+.detail-box {
+    border: 2px dashed var(--input-contrast-color);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.avatar-box {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.exp-box {
+    flex-grow: 1;
+}
+
+.panel-label {
+    font-size: 12px;
+    color: var(--input-contrast-color);
+    font-weight: bold;
+}
+
+.panel-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.captured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.captured-item {
+    display: flex;
+    flex-direction: row;
+    border: 2px dashed var(--input-contrast-color);
+    padding: 12px;
+    gap: 12px;
+    align-items: center;
+    background-color: transparent;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    text-align: left;
+    color: inherit;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.captured-item.selected {
+    border: 2px solid var(--red-color);
+}
+
+.captured-item .static-row {
+    width: 100%;
+    gap: 12px;
+}
+
+.item-avatar {
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+}
+
+.item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.poke-item-name {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.green-bar .health-bar-fill {
+    background-color: var(--green-color);
+}
+
+.red-bar .health-bar-fill {
+    background-color: var(--red-color);
+}
+
+
+/* MODAL UTILITY BUTTONS */
+
+.action-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.btn-dark {
+    background-color: var(--background-color);
+    color: var(--white-color);
+}
+
+.btn-red {
+    background-color: var(--red-color);
+    color: var(--white-color);
+}
+
+/* RESPONSIVE LAYOUT (MOBILE) */
+
+@media screen and (max-width: 800px) {
+    .modal-card {
+        width: 100%;
+        max-height: 90vh;
+    }
+
+    #inventory-items-container {
+        max-height: 35vh;
+    }
+
+    .pokemon-detail-panel {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .avatar-box {
+        max-width: 64px;
+        max-height: 64px;
+    }
+
+    .exp-box {
+        width: calc(100% - 80px);
+    }
+
+    .stat-box {
+        flex-grow: 1;
+        width: calc(33.33% - 8px);
+    }
+
+    .captured-grid {
+        grid-template-columns: 1fr;
+        max-height: auto;
+    }
+}

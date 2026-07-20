@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/session.css">
+    <link rel="stylesheet" href="../css/modals.css">
 </head>
 
 <body>
@@ -20,8 +21,8 @@
         </div>
         <hr>
         <div>
-            <button>Pokémon</button>
-            <button>Inventory</button>
+            <button onclick="openInventory(null, null)">Inventory</button>
+            <button onclick="openPokemon(null, null)">Pokémon</button>
             <button>Diary</button>
         </div>
         <div class="expand"></div>
@@ -33,7 +34,7 @@
     <main>
         <!-- Header -->
         <div class="container header-card">
-            <h2>Aldric</h2>
+            <h2>Player Name</h2>
             <hr>
             <div class="static-row align-between">
                 <h3>Character Sheet</h3>
@@ -193,9 +194,112 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
+
+    <!-- Pop-up Inventory -->
+    <div id="inventory-modal" class="modal-overlay hidden">
+        <div class="modal-card container">
+            <div class="static-row align-between">
+                <h2>INVENTORY</h2>
+                <h2 id="inventory-player-name">Player Name</h2>
+            </div>
+            <hr>
+
+            <!-- Cash in Hand -->
+            <div class="column">
+                <h6>CASH IN HAND</h6>
+                <div class="static-row inventory-section" style="align-items: center;">
+                    <button class="plus-button">₽</button>
+                    <input class="inventory-item-input" type="number" id="inventory-cash" value="0">
+                </div>
+            </div>
+
+            <!-- Item Container -->
+            <div class="column">
+                <h6>ITEMS</h6>
+                <div id="inventory-items-container" class="column">
+                    <!-- Lines goes Here (by JS) -->
+                </div>
+            </div>
+
+            <hr>
+            <!-- Pop-up actions -->
+            <div class="static-row">
+                <button id="add-item-btn" class="btn-dark expand">
+                    Add Item +
+                </button>
+                <button onclick="closeInventory()" class="btn-red">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Gerenciamento de Pokémon -->
+    <div id="pokemon-management-modal" class="modal-overlay hidden">
+        <div class="modal-card container">
+
+            <!-- Header -->
+            <div class="static-row align-between">
+                <h2 id="manage-pokemon-name">POKÉMON NAME</h2>
+                <h2 id="manage-player-name">Player Name</h2>
+            </div>
+            <hr>
+
+            <!-- Top Panel: Selected Pokémon Basic Info -->
+            <div class="pokemon-detail-panel">
+                <div class="detail-box avatar-box"></div>
+
+                <div class="detail-box exp-box column">
+                    <span class="panel-label">EXP - <span id="detail-exp-num">1280</span></span>
+                    <div class="health-bar-container green-bar">
+                        <div id="detail-exp-bar" class="health-bar-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="detail-box stat-box column align-center">
+                    <span class="panel-label">LVL</span>
+                    <span id="detail-lvl-num" class="panel-value">12</span>
+                </div>
+
+                <div class="detail-box stat-box column align-center">
+                    <span class="panel-label">HP</span>
+                    <span id="detail-hp-text" class="panel-value">12 / 12</span>
+                </div>
+
+                <div class="detail-box stat-box column align-center">
+                    <span class="panel-label">HAPPINESS</span>
+                    <span id="detail-happy-text" class="panel-value">5 / 10</span>
+                </div>
+            </div>
+
+            <!--Selected Pokémon Actions -->
+            <div class="action-row">
+                <button class="btn-dark flex-grow">Add To Team</button>
+                <button class="btn-dark flex-grow">Edit</button>
+                <button class="btn-red flex-grow">Delete</button>
+            </div>
+
+            <!-- Inferior Section: Captured -->
+            <h3 class="section-title">CAPTURED POKÉMON</h3>
+            <hr class="dashed-hr">
+
+            <!-- Pokémon List -->
+            <div id="captured-pokemon-list" class="captured-grid">
+                <!-- Lines goes here (by JS) -->
+            </div>
+
+            <hr class="dashed-hr">
+
+            <!-- Footer Actions -->
+            <div class="static-row">
+                <button id="add-pokemon-btn" class="btn-dark flex-grow">New Pokémon</button>
+                <button onclick="closePokemon()" class="red">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/modals.js"></script>
+    <script src="../js/global-scripts.js"></script>
 </body>
 
 </html>

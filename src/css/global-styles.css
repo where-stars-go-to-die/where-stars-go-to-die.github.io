@@ -55,6 +55,7 @@ h6,
 button {
     color: var(--input-contrast-color);
     margin: 0;
+    text-transform: uppercase;
 }
 
 button {
@@ -65,8 +66,9 @@ button {
     color: var(--white-color)
 }
 
-
 @media (pointer: fine) and (hover: hover) {
+
+    input:hover,
     button:hover {
         filter: brightness(125%);
         transform: translateY(-2px);
@@ -74,6 +76,7 @@ button {
     }
 }
 
+input:active,
 button:active {
     transform: translateY(2px);
     filter: saturate(25%);
