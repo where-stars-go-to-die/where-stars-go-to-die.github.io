@@ -13,8 +13,6 @@ PokeDESK is a platform for Pokémon tabletop RPGs. Currently, it relies on hardc
 │   ├── session.css
 │   └── sidebar.css
 ├── data
-├── icons
-│   └── pokeball.svg
 ├── index.html
 ├── js
 │   ├── global-scripts.js
@@ -34,5 +32,5 @@ PokeDESK is a platform for Pokémon tabletop RPGs. Currently, it relies on hardc
         └── icons
             └── pokeball.svg
 
-9 directories, 20 files
+8 directories, 19 files
 ```
