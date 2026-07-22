@@ -202,7 +202,7 @@
         <div class="modal-card container">
             <div class="static-row align-between">
                 <h2>INVENTORY</h2>
-                <h2 id="inventory-player-name">Player Name</h2>
+                <h2 class="get-player-name">Player Name</h2>
             </div>
             <hr>
 
@@ -239,7 +239,7 @@
             <!-- Header -->
             <div class="static-row align-between">
                 <h2 id="manage-pokemon-name">POKÉMON NAME</h2>
-                <h2 id="manage-player-name">Player Name</h2>
+                <h2 class="get-player-name">Player Name</h2>
             </div>
             <hr>
 
@@ -320,14 +320,14 @@
                     <div class="static-row">
                         <div class="column">
                             <h6>TYPE 1</h6>
-                            <select class="custom-select">
-                                <option>dropdown menu</option>
+                            <select id="poke-type-1" class="custom-select">
+                                <option selected disabled value="">Select Type...</option>
                             </select>
                         </div>
                         <div class="column">
                             <h6>TYPE 2</h6>
-                            <select class="custom-select">
-                                <option>dropdown menu</option>
+                            <select id="poke-type-2" class="custom-select">
+                                <option selected disabled value="">Select Type...</option>
                             </select>
                         </div>
                     </div>
@@ -335,6 +335,13 @@
                     <div class="column">
                         <h6>SPECIE</h6>
                         <input type="text" class="inventory-item-input">
+                    </div>
+
+                    <div class="column">
+                        <h6>CAPTURED BY</h6>
+                        <select id="pokeball-captured" class="custom-select">
+                            <option selected disabled value="">Select a Pokeball...</option>
+                        </select>
                     </div>
 
                     <div class="static-row">
@@ -350,15 +357,15 @@
 
                     <div class="row align-between">
                         <div class="column flex-grow">
-                            <h6>HABILITY</h6>
-                            <select class="custom-select">
-                                <option>dropdown menu</option>
+                            <h6>ABILITY</h6>
+                            <select id="poke-ability" class="custom-select">
+                                <option selected disabled value="">Select Ability...</option>
                             </select>
                         </div>
                         <div class="column flex-grow">
                             <h6>NATURE</h6>
-                            <select class="custom-select">
-                                <option>dropdown menu</option>
+                            <select id="poke-nature" class="custom-select">
+                                <option selected disabled value="">Select Nature...</option>
                             </select>
                         </div>
                         <div class="column align-center">
@@ -379,12 +386,8 @@
                         <div class="column flex-grow">
                             <div class="column">
                                 <h6>LEVEL UP SPEED</h6>
-                                <select id="level-up-velocity" class="custom-select">
-                                    <option>Fast</option>
-                                    <option>Medium</option>
-                                    <option>Slow</option>
-                                    <option>Pseudo-legendary</option>
-                                    <option>Legendary</option>
+                                <select id="poke-level-velocity" class="custom-select">
+                                    <option selected disabled value="">Select Level Up Speed...</option>
                                 </select>
                             </div>
                             <div class="column">
@@ -461,6 +464,16 @@
                                     <input type="text" class="inventory-item-input text-center">
                                 </div>
                             </div>
+
+                            <div class="column">
+                                <h6>Attack Type</h6>
+                                <select id="attack-type-1" class="custom-select">
+                                    <option selected disabled value="">Select Type...</option>
+                                </select>
+                            </div>
+
+                            <hr class="red-text">
+
                             <h6>HAVE EFFECT?</h6>
                             <div class="static-row align-center">
                                 <input type="checkbox" class="custom-checkbox" unchecked
@@ -485,6 +498,15 @@
                                     <input type="text" class="inventory-item-input text-center">
                                 </div>
                             </div>
+                            <div class="column">
+                                <h6>Attack Type</h6>
+                                <select id="attack-type-2" class="custom-select">
+                                    <option selected disabled value="">Select Type...</option>
+                                </select>
+                            </div>
+
+                            <hr class="red-text">
+
                             <h6>HAVE EFFECT?</h6>
                             <div class="static-row align-center">
                                 <input type="checkbox" class="custom-checkbox" unchecked
@@ -509,6 +531,15 @@
                                     <input type="text" class="inventory-item-input text-center">
                                 </div>
                             </div>
+                            <div class="column">
+                                <h6>Attack Type</h6>
+                                <select id="attack-type-3" class="custom-select">
+                                    <option selected disabled value="">Select Type...</option>
+                                </select>
+                            </div>
+
+                            <hr class="red-text">
+
                             <h6>HAVE EFFECT?</h6>
                             <div class="static-row align-center">
                                 <input type="checkbox" class="custom-checkbox" unchecked
@@ -533,6 +564,15 @@
                                     <input type="text" class="inventory-item-input text-center">
                                 </div>
                             </div>
+                            <div class="column">
+                                <h6>Attack Type</h6>
+                                <select id="attack-type-4" class="custom-select">
+                                    <option selected disabled value="">Select Type...</option>
+                                </select>
+                            </div>
+
+                            <hr class="red-text">
+
                             <h6>HAVE EFFECT?</h6>
                             <div class="static-row align-center">
                                 <input type="checkbox" class="custom-checkbox" unchecked
@@ -556,6 +596,8 @@
         </div>
     </div>
 
+    <script src="../js/state.js"></script>
+    <script src="../js/pokemon-status.js"></script>
     <script src="../js/player-management.js"></script>
     <script src="../js/global-scripts.js"></script>
 </body>
