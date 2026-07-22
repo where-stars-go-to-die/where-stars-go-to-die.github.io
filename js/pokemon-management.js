@@ -55,8 +55,11 @@ function renderPokemonBasicInfo() {
     }
 }
 
+let currentPokemon = null;
+
 function selectPokemon(pokemon) {
     console.log(pokemon);
+    showSelectedPokemon();
 
     selectedLvlDetails.textContent = pokemon.level;
     selectedXpDetails.textContent = pokemon.xp;
@@ -65,10 +68,23 @@ function selectPokemon(pokemon) {
     selectedNameDetails.textContent = pokemon.species;
 
     selectedImgDetails.innerHTML = `<img src="${pokemon.imgUrl}" alt="${pokemon.species}">`;
+
+    currentPokemon = pokemon;
 }
 
-function handlePokemonEdit(pokemon) {
-    console.log(pokemon);
+function handlePokemonEdit() {
+    console.log("Editing: ", currentPokemon.species);
+}
+
+function handlePokemonDelete() {
+    console.log("Deleting: ", currentPokemon.species);
+
+    const index = characterState.capturedPokemon.indexOf(currentPokemon);
+    characterState.capturedPokemon.splice(index, 1);
+
+    currentPokemon = null;
+    hiddenSelectedPokemon();
+    renderPokemonBasicInfo();
 }
 
 function alterPokemonHappiness(quantity) {
@@ -116,6 +132,14 @@ function addPokemon() {
    MODAL AND UI CONTROL
    ========================================================================== */
 
+function showSelectedPokemon() {
+    document.querySelector('.select-pokemon').style.display = 'flex';
+}
+
+function hiddenSelectedPokemon() {
+    document.querySelector('.select-pokemon').style.display = 'none';
+}
+
 function openPokemon(pokeArray = null) {
     if (pokeArray) characterState.capturedPokemon = pokeArray;
 
@@ -125,6 +149,7 @@ function openPokemon(pokeArray = null) {
 
 function closePokemon() {
     pokemonModal?.classList.add('hidden');
+    hiddenSelectedPokemon();
 }
 
 function openEditPokemon() {
@@ -155,6 +180,14 @@ function updateAllEffectInputs() {
    ========================================================================== */
 document.getElementById('add-pokemon-btn')?.addEventListener('click', () => {
     addPokemon();
+});
+
+document.getElementById('delete-selected-pokemon')?.addEventListener('click', () => {
+    handlePokemonDelete();
+});
+
+document.getElementById('edit-selected-pokemon')?.addEventListener('click', () => {
+    handlePokemonEdit();
 });
 
 document.getElementById('add-xp')?.addEventListener('click', () => {

@@ -231,37 +231,39 @@
             <hr>
 
             <!-- Top Panel: Selected Pokémon Basic Info -->
-            <div class="pokemon-detail-panel">
-                <div id="detail-img" class="detail-box avatar-box"></div>
+            <div class="column select-pokemon">
+                <div class="pokemon-detail-panel">
+                    <div id="detail-img" class="detail-box avatar-box"></div>
 
-                <div class="detail-box exp-box column">
-                    <span class="panel-label">EXP - <span id="detail-exp-num">~</span></span>
-                    <div class="health-bar-container green-bar">
-                        <div id="detail-exp-bar" class="health-bar-fill" style="width: 75%;"></div>
+                    <div class="detail-box exp-box column">
+                        <span class="panel-label">EXP - <span id="detail-exp-num">~</span></span>
+                        <div class="health-bar-container green-bar">
+                            <div id="detail-exp-bar" class="health-bar-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="detail-box stat-box column align-center">
+                        <span class="panel-label">LVL</span>
+                        <span id="detail-lvl-num" class="panel-value">~</span>
+                    </div>
+
+                    <div class="detail-box stat-box column align-center">
+                        <span class="panel-label">HP</span>
+                        <span id="detail-hp-text" class="panel-value">~ / ~</span>
+                    </div>
+
+                    <div class="detail-box stat-box column align-center">
+                        <span class="panel-label">HAPPINESS</span>
+                        <span id="detail-happy-text" class="panel-value">~</span>
                     </div>
                 </div>
 
-                <div class="detail-box stat-box column align-center">
-                    <span class="panel-label">LVL</span>
-                    <span id="detail-lvl-num" class="panel-value">~</span>
+                <!--Selected Pokémon Actions -->
+                <div class="action-row">
+                    <button class="btn-dark flex-grow">Add To Team</button>
+                    <button id="edit-selected-pokemon" class="btn-dark flex-grow">Edit</button>
+                    <button id="delete-selected-pokemon" class="btn-red flex-grow">Delete</button>
                 </div>
-
-                <div class="detail-box stat-box column align-center">
-                    <span class="panel-label">HP</span>
-                    <span id="detail-hp-text" class="panel-value">~ / ~</span>
-                </div>
-
-                <div class="detail-box stat-box column align-center">
-                    <span class="panel-label">HAPPINESS</span>
-                    <span id="detail-happy-text" class="panel-value">~</span>
-                </div>
-            </div>
-
-            <!--Selected Pokémon Actions -->
-            <div class="action-row">
-                <button class="btn-dark flex-grow">Add To Team</button>
-                <button onclick="openEditPokemon()" class="btn-dark flex-grow">Edit</button>
-                <button class="btn-red flex-grow">Delete</button>
             </div>
 
             <!-- Inferior Section: Captured -->
