@@ -104,7 +104,7 @@ function addPokemon() {
         attacks: [
             { atkName: '', atkType: '', pp: 10, pwr: 40, haveEffect: false, effect: '' }
         ],
-        imgUrl: 'https://imgs.search.brave.com/DPXaIr7D-rZeiygOpRELOGuZ8XK98kHl18ppsfXsPPk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbmcu/cG5ndHJlZS5jb20v/cG5nLXZlY3Rvci8y/MDIyMDkxNC9vdXJt/aWQvcG5ndHJlZS1y/ZWFsaXN0aWMtM2Qt/cG9rZWJhbGwtbW9k/ZXJuLWNvbmNlcHQt/c2lnbi12ZWN0b3It/cG5nLWltYWdlXzM5/MjI3ODc0LnBuZw'
+        imgUrl: 'https://raw.githubusercontent.com/ryanmferreira/pokedesk-vanilla/refs/heads/main/assets/icons/pokeball.svg'
     });
 
     console.log(characterState);

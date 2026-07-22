@@ -134,7 +134,6 @@ function removeItem(index) {
 /* ==========================================================================
    MODAL AND UI CONTROL
    ========================================================================== */
-
 function openInventory(itemsArray = null) {
     if (itemsArray) characterState.inventory = itemsArray;
 
