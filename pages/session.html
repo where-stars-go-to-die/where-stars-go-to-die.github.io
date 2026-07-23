@@ -17,6 +17,8 @@
 
 <body>
     <nav>
+        <button type="button" class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ Menu</button>
+
         <div class="nav-header">
             <h1>Hello, Ryan!</h1>
             <h6>Player</h6>
@@ -28,13 +30,14 @@
             <button>Diary</button>
         </div>
         <div class="expand"></div>
-        <div>
-            <button type="button">Reload</button>
-            <button type="button">Save changes</button>
+        <!-- Adicionada a classe 'mobile-menu-dropdown' aqui -->
+        <div class="mobile-menu-dropdown">
+            <button type="button" disabled>Reload</button>
+            <button type="button" disabled>Save changes</button>
             <button type="button">Leave the Session</button>
         </div>
     </nav>
-
+    
     <main>
         <!-- Header -->
         <div class="container header-card">
@@ -248,7 +251,7 @@
 
                 <!--Selected Pokémon Actions -->
                 <div class="action-row">
-                    <button id="add-selected-pokemon" class="btn-dark flex-grow">Add To Team</button>
+                    <button id="add-selected-pokemon" class="btn-dark flex-grow">Move To Team</button>
                     <button id="edit-selected-pokemon" class="btn-dark flex-grow">Edit</button>
                     <button id="delete-selected-pokemon" class="btn-red flex-grow">Release</button>
                 </div>
@@ -256,6 +259,10 @@
 
             <!-- Inferior Section: Captured -->
             <h3 class="section-title">CAPTURED POKÉMON</h3>
+            <select class="custom-select" name="" id="pokemon-location-change">
+                <option value="Box">Box</option>
+                <option value="Party">Party</option>
+            </select>
             <hr class="dashed-hr">
 
             <!-- Pokémon List -->

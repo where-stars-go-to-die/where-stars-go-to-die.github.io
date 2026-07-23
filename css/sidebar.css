@@ -11,6 +11,9 @@ nav {
     width: fit-content;
     background-color: var(--glass-color);
     padding: var(--default-padding);
+
+    max-width: 20%;
+    min-width: 20%;
 }
 
 nav div {
@@ -44,6 +47,10 @@ nav button:hover {
     border-color: var(--input-contrast-color);
 }
 
+.mobile-menu-toggle {
+    display: none;
+}
+
 @media screen and (max-width: 720px) {
     main {
         padding-bottom: var(--default-padding) !important;
@@ -56,6 +63,7 @@ nav button:hover {
         left: 0;
         bottom: auto;
         max-height: 64px;
+        max-width: 100%;
         width: 100%;
         flex-direction: row;
         align-items: center;
@@ -69,12 +77,42 @@ nav button:hover {
         display: none;
     }
 
+    .mobile-menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
     nav div:nth-of-type(2) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         flex-grow: 1;
         gap: 4px;
         max-width: 100%;
+    }
+
+    .mobile-menu-dropdown {
+        display: none;
+        position: absolute;
+        top: 64px;
+        right: 0;
+        background-color: var(--glass-color);
+        border-left: 2px dashed var(--input-color);
+        border-bottom: 2px dashed var(--input-color);
+        padding: 12px;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 160px;
+        z-index: 10000;
+        backdrop-filter: blur(8px);
+    }
+
+    .mobile-menu-dropdown.show {
+        display: flex;
     }
 
     nav button {
@@ -88,5 +126,11 @@ nav button:hover {
         min-width: 0;
         white-space: nowrap;
         overflow: hidden;
+    }
+
+    .mobile-menu-dropdown button {
+        text-align: left;
+        border-right: 4px solid var(--input-color);
+        border-bottom: none;
     }
 }

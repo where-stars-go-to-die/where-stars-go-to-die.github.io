@@ -5,6 +5,8 @@ const capturedPokemonElement = document.getElementById('captured-pokemon-list');
 const pokemonAttacksElement = document.getElementById('attacks-grid');
 const teamPokemonElement = document.getElementById('pokemon-grid');
 
+const pokemonLocationSelect = document.getElementById('pokemon-location-change');
+
 const teamSizeElement = document.getElementById('team-size');
 const addToTeamButton = document.getElementById('add-selected-pokemon');
 
@@ -73,7 +75,6 @@ function renderPokemonTeam() {
     }
 
     teamPokemonElement.innerHTML = '';
-
     let totalPokemons = 0;
 
     for (const pokemonInfo of characterState.team) {
@@ -106,9 +107,9 @@ function renderPokemonTeam() {
         teamPokemonElement.appendChild(pokemonSlot);
     }
 
-    let teamSize = (6 - totalPokemons);
+    let emptySlotsNeeded = 6 - totalPokemons;
 
-    for (let i = 0; i < teamSize; i++) {
+    for (let i = 0; i < emptySlotsNeeded; i++) {
         const emptySlot = document.createElement('button');
         emptySlot.textContent = '(+) Empty';
         emptySlot.classList = 'pokemon-slot empty-slot';
@@ -116,17 +117,26 @@ function renderPokemonTeam() {
         teamPokemonElement.appendChild(emptySlot);
     }
 
-    teamSizeElement.textContent = totalPokemons + "/" + 6;
+    if (teamSizeElement) {
+        teamSizeElement.textContent = totalPokemons + "/6";
+    }
 }
 
 function renderCapturedPokemons() {
     if (!capturedPokemonElement) {
-        return
-    };
+        return;
+    }
 
     capturedPokemonElement.innerHTML = '';
 
-    for (const pokemonInfo of characterState.capturedPokemon) {
+    let isParty = false;
+    if (pokemonLocationSelect && pokemonLocationSelect.value) {
+        isParty = pokemonLocationSelect.value.toLowerCase() === "party";
+    }
+
+    const pokemonLocation = isParty ? characterState.team : characterState.capturedPokemon;
+
+    for (const pokemonInfo of pokemonLocation) {
         const pokemonSlot = document.createElement('button');
         pokemonSlot.className = 'captured-item';
 
@@ -275,7 +285,7 @@ function handlePokemonDelete() {
     characterState.capturedPokemon.splice(index, 1);
 
     currentPokemon = null;
-    hiddenSelectedPokemon();
+    clearSelection();
     renderCapturedPokemons();
 }
 
@@ -330,42 +340,51 @@ function addPokemon() {
     renderCapturedPokemons();
 }
 
-function addToTeam() {
-    if (!currentPokemon) {
-        return;
-    }
+function isPokemonInTeam() {
+    const indexInTeam = characterState.team.indexOf(currentPokemon);
+    const indexInBox = characterState.capturedPokemon.indexOf(currentPokemon);
 
-    const { inTeam, index } = isPokemonInTeam();
+    return {
+        inTeam: indexInTeam !== -1,
+        teamIndex: indexInTeam,
+        boxIndex: indexInBox
+    };
+}
+
+function addToTeam() {
+    if (!currentPokemon) return;
+
+    const { inTeam, teamIndex, boxIndex } = isPokemonInTeam();
 
     if (inTeam) {
-        characterState.team.splice(index, 1);
-        console.log("Removido do time:", currentPokemon.species);
+        const pkmToMove = characterState.team.splice(teamIndex, 1)[0];
+        characterState.capturedPokemon.push(pkmToMove);
     } else {
-        characterState.team.push(currentPokemon);
+        if (characterState.team.length >= 6) {
+            alert("Team already full!");
+            return;
+        }
+
+        const pkmToMove = characterState.capturedPokemon.splice(boxIndex, 1)[0];
+        characterState.team.push(pkmToMove);
         console.log("Adicionado ao time:", currentPokemon.species);
     }
 
     updateTeamButton();
-    renderPokemonTeam()
+    renderPokemonTeam();
+    renderCapturedPokemons();
+
+    clearSelection();
 }
 
 function updateTeamButton() {
-    const { inTeam, index } = isPokemonInTeam();
+    const { inTeam } = isPokemonInTeam();
 
     if (inTeam) {
-        addToTeamButton.textContent = "Remove from Team";
+        addToTeamButton.textContent = "Send to PC";
     } else {
         addToTeamButton.textContent = "Add to Team";
     }
-}
-
-function isPokemonInTeam() {
-    const index = characterState.team.indexOf(currentPokemon);
-
-    return {
-        inTeam: index !== -1,
-        index: index
-    };
 }
 
 function getAttackElements(index) {
@@ -453,7 +472,7 @@ function openPokemon(pokeArray = null) {
 
 function closePokemon() {
     pokemonModal?.classList.add('hidden');
-    hiddenSelectedPokemon();
+    clearSelection();
 }
 
 function closeAddImage() {
@@ -553,6 +572,17 @@ document.getElementById('save-pokemon-btn')?.addEventListener('click', () => {
 document.getElementById('add-xp')?.addEventListener('click', () => {
     addXP();
 });
+
+pokemonLocationSelect?.addEventListener('change', () => {
+    renderPokemonTeam();
+    renderCapturedPokemons();
+    clearSelection();
+});
+
+function clearSelection() {
+    hiddenSelectedPokemon();
+    currentPokemon = null;
+}
 
 pokeLevelVelocity?.addEventListener('change', () => {
     updateLevel();
