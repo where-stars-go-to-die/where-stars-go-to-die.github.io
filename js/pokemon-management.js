@@ -4,6 +4,10 @@
 const pokemonContainerElement = document.getElementById('captured-pokemon-list');
 const pokemonTeamElement = document.getElementById('pokemon-grid');
 
+const teamSizeElement = document.getElementById('team-size');
+
+const addToTeamButton = document.getElementById('add-selected-pokemon');
+
 // Pokémon Attributtes
 let currentPokemon = null;
 
@@ -65,41 +69,43 @@ function renderPokemonTeam() {
 
     pokemonTeamElement.innerHTML = '';
 
-    let teamSize = 0;
+    let totalPokemons = 0;
 
     for (let index in characterState.team) {
-        const pokemonData = characterState.team[index];
+        const pokemonInfo = characterState.team[index];
 
-        const pokemonElement = document.createElement('button');
-        pokemonElement.classList = 'pokemon-slot active-slot';
+        const pokemonSlot = document.createElement('button');
+        pokemonSlot.classList = 'pokemon-slot active-slot';
 
-        teamSize++;
+        totalPokemons++;
 
-        pokemonElement.innerHTML = `
-            <div class="pokemon-image-placeholder"></div>
+        pokemonSlot.innerHTML = `
+            <div class="detail-box avatar-box"><img src="${pokemonInfo.imgUrl}" alt="${pokemonInfo.species}"></div>
             <div class="column pokemon-info">
                 <div class="static-row align-between">
-                    <h5>Pokémon Name</h5>
-                    <h6>LVL 12</h6>
+                    <h5>${pokemonInfo.species}</h5>
+                    <span>LVL ${calculateLevel(pokemonInfo.xp)}</span>
                 </div>
                 <div class="health-bar-container">
                     <div class="health-bar-fill" style="width: 100%;"></div>
                 </div>
                 <div class="static-row align-between tiny-text">
-                    <span>HP 12/12</span>
-                    <span>Happiness 5/10</span>
+                    <span>HP ${pokemonInfo.hp} / ${pokemonInfo.status.hp}</span>
+                    <span>Happiness ${pokemonInfo.happiness}/10</span>
                 </div>
             </div>
         `;
 
-        pokemonElement.addEventListener('click', () => {
-            selectPokemon(pokemonData);
+        pokemonSlot.addEventListener('click', () => {
+            selectPokemon(pokemonInfo);
         });
 
-        pokemonTeamElement.appendChild(pokemonElement);
+        pokemonTeamElement.appendChild(pokemonSlot);
     }
 
-    for (let i = 0; i < (6 - teamSize); i++) {
+    let teamSize = (6 - totalPokemons);
+
+    for (let i = 0; i < teamSize; i++) {
         console.log(i)
 
         const emptySlot = document.createElement('button');
@@ -108,9 +114,11 @@ function renderPokemonTeam() {
 
         pokemonTeamElement.appendChild(emptySlot);
     }
+
+    teamSizeElement.textContent = totalPokemons + "/" + 6;
 }
 
-function renderPokemonBasicInfo() {
+function renderCapturedPokemons() {
     if (!pokemonContainerElement) {
         return
     };
@@ -118,32 +126,33 @@ function renderPokemonBasicInfo() {
     pokemonContainerElement.innerHTML = '';
 
     for (let index in characterState.capturedPokemon) {
-        const poke = characterState.capturedPokemon[index];
-        const pokemon = document.createElement('button');
-        pokemon.className = 'captured-item';
+        const pokemonInfo = characterState.capturedPokemon[index];
+        const pokemonSlot = document.createElement('button');
+        pokemonSlot.className = 'captured-item';
 
-        pokemon.innerHTML = `
-        <div class="detail-box avatar-box"><img src="${poke.imgUrl}" alt="${poke.species}"></div>
+        pokemonSlot.innerHTML = `
+        <div class="detail-box avatar-box"><img src="${pokemonInfo.imgUrl}" alt="${pokemonInfo.species}"></div>
             <div class="item-info column">
                 <div class="static-row align-between">
-                    <span class="poke-item-name">${poke.species}</span>
-                    <span class="poke-item-lvl">LVL ${poke.level}</span>
+                    <span class="poke-item-name">${pokemonInfo.species}</span>
+                    <span class="poke-item-lvl">LVL ${calculateLevel(pokemonInfo.xp)}</span>
+                    
                 </div>
                 <div class="health-bar-container green-bar">
                     <div class="health-bar-fill" style="width: 100%;"></div>
                 </div>
                 <div class="static-row align-between tiny-text">
-                    <span>HP<br> ${poke.hp} / ${poke.status.hp}</span>
-                    <span>HAPPINESS<br> ${poke.happiness} / 10</span>
+                    <span>HP<br> ${pokemonInfo.hp} / ${pokemonInfo.status.hp}</span>
+                    <span>HAPPINESS<br> ${pokemonInfo.happiness} / 10</span>
                 </div>
             </div>
         `;
 
-        pokemon.addEventListener('click', () => {
-            selectPokemon(poke);
+        pokemonSlot.addEventListener('click', () => {
+            selectPokemon(pokemonInfo);
         });
 
-        pokemonContainerElement.appendChild(pokemon);
+        pokemonContainerElement.appendChild(pokemonSlot);
     }
 }
 
@@ -175,7 +184,7 @@ function handlePokemonDelete() {
 
     currentPokemon = null;
     hiddenSelectedPokemon();
-    renderPokemonBasicInfo();
+    renderCapturedPokemons();
 }
 
 function alterPokemonHappiness(quantity) {
@@ -197,7 +206,6 @@ function addPokemon() {
     characterState.capturedPokemon.push({
         species: 'NEW POKÉMON',
         gender: '',
-        level: 5,
         type1: '',
         type2: '',
         levelSpeed: '',
@@ -224,12 +232,18 @@ function addPokemon() {
 
     console.log(characterState);
 
-    renderPokemonBasicInfo();
+    renderCapturedPokemons();
 }
 
 function addToTeam() {
     if (!currentPokemon) {
         return;
+    }
+
+    for (const pokemon of characterState.team) {
+        if (pokemon === currentPokemon) {
+            return;
+        }
     }
 
     characterState.team.push(currentPokemon);
@@ -269,7 +283,9 @@ function updatePokemonInfo() {
     };
 
     selectPokemon(currentPokemon);
-    renderPokemonBasicInfo();
+
+    renderCapturedPokemons();
+    renderPokemonTeam();
 
     closeEditPokemon();
 }
@@ -290,7 +306,7 @@ function openPokemon(pokeArray = null) {
         characterState.capturedPokemon = pokeArray;
     }
 
-    renderPokemonBasicInfo();
+    renderCapturedPokemons();
     pokemonModal?.classList.remove('hidden');
 }
 
