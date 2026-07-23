@@ -233,7 +233,16 @@
 }
 
 .captured-item.selected {
-    border: 2px solid var(--red-color);
+    border: 2px solid var(--red-color) !important;
+    color: var(--red-color) !important;
+}
+
+.captured-item.selected * {
+    color: var(--red-color) !important;
+}
+
+.captured-item.selected .avatar-box {
+    border: 2px solid var(--red-color) !important;
 }
 
 .item-info {

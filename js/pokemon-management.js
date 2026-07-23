@@ -158,7 +158,7 @@ function renderCapturedPokemons() {
             </div>
         `;
 
-        pokemonSlot.addEventListener('click', () => {
+        pokemonSlot.addEventListener('click', (event) => {
             handlePokemonSelect(pokemonInfo);
         });
 
@@ -254,21 +254,26 @@ function handlePokemonSelect(pokemon) {
     showSelectedPokemon();
     renderPokemonAttacks(pokemon);
 
-    selectedXpDetails.textContent = pokemon.xp;
-    selectedLvlDetails.textContent = calculateLevel(pokemon.xp, pokemon.levelSpeed);
+    currentPokemon = pokemon;
 
-    selectedHappinessDetails.textContent = pokemon.happiness;
-    selectedHealthDetails.textContent = `${pokemon.hp} / ${pokemon.status?.hp || '?'}`;
-    selectedNameDetails.textContent = pokemon.species;
+    const allSlots = capturedPokemonElement.querySelectorAll('.captured-item');
+    allSlots.forEach(slot => slot.classList.remove('selected'));
 
-    selectedImgDetails.innerHTML = `<img src="${pokemon.imgUrl}" alt="${pokemon.species}">`;
+    event.currentTarget.classList.add('selected');
 
-    selectedHealthBarDetails.style.width = updateLifeBar(pokemon);
-    selectedXpBarDetails.style.width = updateXpBar(pokemon);
+    selectedXpDetails.textContent = currentPokemon.xp;
+    selectedLvlDetails.textContent = calculateLevel(currentPokemon.xp, currentPokemon.levelSpeed);
+
+    selectedHappinessDetails.textContent = currentPokemon.happiness;
+    selectedHealthDetails.textContent = `${currentPokemon.hp} / ${currentPokemon.status?.hp || '?'}`;
+    selectedNameDetails.textContent = currentPokemon === null ? "No Pokémon Selected" : currentPokemon.species;
+
+    selectedImgDetails.innerHTML = `<img src="${currentPokemon.imgUrl}" alt="${currentPokemon.species}">`;
+
+    selectedHealthBarDetails.style.width = updateLifeBar(currentPokemon);
+    selectedXpBarDetails.style.width = updateXpBar(currentPokemon);
 
     loadAttackType();
-
-    currentPokemon = pokemon;
 
     updateTeamButton();
 }
@@ -284,9 +289,9 @@ function handlePokemonDelete() {
     const index = characterState.capturedPokemon.indexOf(currentPokemon);
     characterState.capturedPokemon.splice(index, 1);
 
-    currentPokemon = null;
-    clearSelection();
+
     renderCapturedPokemons();
+    clearSelection();
 }
 
 function alterPokemonHappiness(quantity) {
@@ -338,6 +343,7 @@ function addPokemon() {
     console.log(characterState);
 
     renderCapturedPokemons();
+    clearSelection();
 }
 
 function isPokemonInTeam() {
@@ -351,23 +357,24 @@ function isPokemonInTeam() {
     };
 }
 
-function addToTeam() {
-    if (!currentPokemon) return;
+function moveToTeam() {
+    if (!currentPokemon) {
+        return;
+    }
 
     const { inTeam, teamIndex, boxIndex } = isPokemonInTeam();
 
     if (inTeam) {
-        const pkmToMove = characterState.team.splice(teamIndex, 1)[0];
-        characterState.capturedPokemon.push(pkmToMove);
+        const pokemonToMove = characterState.team.splice(teamIndex, 1)[0];
+        characterState.capturedPokemon.push(pokemonToMove);
     } else {
         if (characterState.team.length >= 6) {
             alert("Team already full!");
             return;
         }
 
-        const pkmToMove = characterState.capturedPokemon.splice(boxIndex, 1)[0];
-        characterState.team.push(pkmToMove);
-        console.log("Adicionado ao time:", currentPokemon.species);
+        const pokemonToMove = characterState.capturedPokemon.splice(boxIndex, 1)[0];
+        characterState.team.push(pokemonToMove);
     }
 
     updateTeamButton();
@@ -434,8 +441,8 @@ function updatePokemonInfo() {
             const els = getAttackElements(index);
 
             if (els.name) attack.name = els.name.value;
-            if (els.pwr) attack.pwr = parseInt(els.pwr.value, 10) || 0;
-            if (els.pp) attack.pp = parseInt(els.pp.value, 10) || 0;
+            if (els.pwr) attack.pwr = parseInt(els.pwr.value, 10);
+            if (els.pp) attack.pp = parseInt(els.pp.value, 10);
             if (els.effect) attack.effect = els.effect.value;
             if (els.type) attack.type = els.type.value;
             if (els.haveEffect) attack.haveEffect = els.haveEffect.checked;
@@ -536,6 +543,7 @@ function closeEditPokemon() {
 
 function toggleEffectInput(checkbox) {
     const textInput = checkbox.nextElementSibling;
+
     if (textInput) {
         textInput.disabled = !checkbox.checked;
     }
@@ -554,7 +562,7 @@ document.getElementById('add-pokemon-btn')?.addEventListener('click', () => {
 });
 
 document.getElementById('add-selected-pokemon')?.addEventListener('click', () => {
-    addToTeam();
+    moveToTeam();
 });
 
 document.getElementById('delete-selected-pokemon')?.addEventListener('click', () => {
@@ -580,8 +588,9 @@ pokemonLocationSelect?.addEventListener('change', () => {
 });
 
 function clearSelection() {
-    hiddenSelectedPokemon();
+    selectedNameDetails.textContent = "No Pokémon Selected";
     currentPokemon = null;
+    hiddenSelectedPokemon();
 }
 
 pokeLevelVelocity?.addEventListener('change', () => {
