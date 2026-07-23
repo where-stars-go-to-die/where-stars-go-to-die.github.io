@@ -1,14 +1,14 @@
 /* ==========================================================================
    STATES AND GLOBAL SELECTORS
    ========================================================================== */
-const pokemonContainerElement = document.getElementById('captured-pokemon-list');
-const pokemonTeamElement = document.getElementById('pokemon-grid');
+const capturedPokemonElement = document.getElementById('captured-pokemon-list');
+const pokemonAttacksElement = document.getElementById('attacks-grid');
+const teamPokemonElement = document.getElementById('pokemon-grid');
 
 const teamSizeElement = document.getElementById('team-size');
-
 const addToTeamButton = document.getElementById('add-selected-pokemon');
 
-// Pokémon Attributtes
+// ===== Pokémon Attributtes =====
 let currentPokemon = null;
 
 const xpToAddInput = document.getElementById('xp-to-add');
@@ -46,15 +46,20 @@ const pokemonStatusDef = document.getElementById('poke-status-def');
 const pokemonStatusSpDef = document.getElementById('poke-status-sp-def');
 const pokemonStatusSpd = document.getElementById('poke-status-spd');
 
-// Selected Pokemon Info
+// ===== Selected Pokemon Info =====
 const selectedNameDetails = document.getElementById('manage-pokemon-name');
-const selectedLvlDetails = document.getElementById('detail-lvl-num');
-const selectedXpDetails = document.getElementById('detail-exp-num');
-const selectedHappinessDetails = document.getElementById('detail-happy-text');
-const selectedHealthDetails = document.getElementById('detail-hp-text');
 const selectedImgDetails = document.getElementById('detail-img');
 
-// Modal
+const selectedXpBarDetails = document.getElementById('detail-exp-bar');
+const selectedLvlDetails = document.getElementById('detail-lvl-num');
+const selectedXpDetails = document.getElementById('detail-exp-num');
+
+const selectedHappinessDetails = document.getElementById('detail-happy-text');
+
+const selectedHealthDetails = document.getElementById('detail-hp-text');
+const selectedHealthBarDetails = document.getElementById('detail-life-bar');
+
+// ===== Modal =====
 const pokemonModal = document.getElementById('pokemon-management-modal');
 const editPokemonModal = document.getElementById('edit-pokemon-modal');
 const addImageModal = document.getElementById('add-image-modal');
@@ -63,17 +68,15 @@ const addImageModal = document.getElementById('add-image-modal');
    CAPTURED POKEMON MANAGEMENT
    ========================================================================== */
 function renderPokemonTeam() {
-    if (!pokemonTeamElement) {
+    if (!teamPokemonElement) {
         return;
     }
 
-    pokemonTeamElement.innerHTML = '';
+    teamPokemonElement.innerHTML = '';
 
     let totalPokemons = 0;
 
-    for (let index in characterState.team) {
-        const pokemonInfo = characterState.team[index];
-
+    for (const pokemonInfo of characterState.team) {
         const pokemonSlot = document.createElement('button');
         pokemonSlot.classList = 'pokemon-slot active-slot';
 
@@ -87,7 +90,7 @@ function renderPokemonTeam() {
                     <span>LVL ${calculateLevel(pokemonInfo.xp)}</span>
                 </div>
                 <div class="health-bar-container">
-                    <div class="health-bar-fill" style="width: 100%;"></div>
+                    <div class="health-bar-fill" style="width: ${updateLifeBar(pokemonInfo)}"></div>
                 </div>
                 <div class="static-row align-between tiny-text">
                     <span>HP ${pokemonInfo.hp} / ${pokemonInfo.status.hp}</span>
@@ -97,36 +100,33 @@ function renderPokemonTeam() {
         `;
 
         pokemonSlot.addEventListener('click', () => {
-            selectPokemon(pokemonInfo);
+            handlePokemonSelect(pokemonInfo);
         });
 
-        pokemonTeamElement.appendChild(pokemonSlot);
+        teamPokemonElement.appendChild(pokemonSlot);
     }
 
     let teamSize = (6 - totalPokemons);
 
     for (let i = 0; i < teamSize; i++) {
-        console.log(i)
-
         const emptySlot = document.createElement('button');
         emptySlot.textContent = '(+) Empty';
         emptySlot.classList = 'pokemon-slot empty-slot';
 
-        pokemonTeamElement.appendChild(emptySlot);
+        teamPokemonElement.appendChild(emptySlot);
     }
 
     teamSizeElement.textContent = totalPokemons + "/" + 6;
 }
 
 function renderCapturedPokemons() {
-    if (!pokemonContainerElement) {
+    if (!capturedPokemonElement) {
         return
     };
 
-    pokemonContainerElement.innerHTML = '';
+    capturedPokemonElement.innerHTML = '';
 
-    for (let index in characterState.capturedPokemon) {
-        const pokemonInfo = characterState.capturedPokemon[index];
+    for (const pokemonInfo of characterState.capturedPokemon) {
         const pokemonSlot = document.createElement('button');
         pokemonSlot.className = 'captured-item';
 
@@ -139,7 +139,7 @@ function renderCapturedPokemons() {
                     
                 </div>
                 <div class="health-bar-container green-bar">
-                    <div class="health-bar-fill" style="width: 100%;"></div>
+                    <div class="health-bar-fill" style="width: ${updateLifeBar(pokemonInfo)};"></div>
                 </div>
                 <div class="static-row align-between tiny-text">
                     <span>HP<br> ${pokemonInfo.hp} / ${pokemonInfo.status.hp}</span>
@@ -149,25 +149,111 @@ function renderCapturedPokemons() {
         `;
 
         pokemonSlot.addEventListener('click', () => {
-            selectPokemon(pokemonInfo);
+            handlePokemonSelect(pokemonInfo);
         });
 
-        pokemonContainerElement.appendChild(pokemonSlot);
+        capturedPokemonElement.appendChild(pokemonSlot);
     }
 }
 
-function selectPokemon(pokemon) {
+function renderPokemonAttacks(pokemon) {
+    if (!pokemonAttacksElement) {
+        return
+    };
+
+    pokemonAttacksElement.innerHTML = '';
+
+    for (const attack of pokemon.attacks) {
+        const attackSlot = document.createElement('div');
+        attackSlot.className = 'attack-card';
+
+        var index = pokemon.attacks.indexOf(attack);
+
+        attackSlot.innerHTML = `
+            <div class="static-row">
+                <div class="column flex-grow">
+                    <h6>ATTACK</h6>
+                    <input id="attack-name-${index}" type="text" class="inventory-item-input">
+                </div>
+                <div class="column" style="width: 40px;">
+                    <h6>PWR</h6>
+                    <input id="attack-power-${index}" type="text" class="inventory-item-input text-center">
+                </div>
+                <div class="column" style="width: 40px;">
+                    <h6>PP</h6>
+                    <input id="attack-power-points-${index}" type="text" class="inventory-item-input text-center">
+                </div>
+            </div>
+
+            <div class="column">
+                <h6>Attack Type</h6>
+                <select id="attack-type-${index}" class="custom-select-red">
+                    <option selected disabled value="">Select Type...</option>
+                </select>
+            </div>
+
+            <hr class="red-text">
+
+            <h6>HAVE EFFECT?</h6>
+            <div class="static-row align-center">
+                <input id="attack-have-effect-${index}" type="checkbox" class="custom-checkbox" onchange="toggleEffectInput(this)">
+                <input id="attack-effect-${index}" type="text" class="inventory-item-input">
+            </div>
+        `;
+
+        pokemonAttacksElement.appendChild(attackSlot);
+    }
+}
+
+function debugPokemon() {
+    console.log(characterState.capturedPokemon.attacks)
+}
+
+function updateLifeBar(pokemon) {
+    const percentage = Math.round((pokemon.hp / pokemon.status.hp) * 100);
+
+    return `${percentage}%`;
+}
+
+function updateXpBar(pokemon) {
+    var currentXp = pokemon.xp || 0;
+    var currentVel = pokemon.levelSpeed || 'fast';
+    var currentLevel = calculateLevel(currentXp);
+
+    var baseXp = getXpQuantity(5, currentVel);
+
+    var xpCurrentLevel = getXpQuantity(currentLevel, currentVel) - baseXp;
+    var xpNextLevel = getXpQuantity(currentLevel + 1, currentVel) - baseXp;
+
+    var xpInCurrentLevel = currentXp - xpCurrentLevel;
+
+    var xpSpanForNextLevel = xpNextLevel - xpCurrentLevel;
+
+    var percentage = (xpInCurrentLevel / xpSpanForNextLevel) * 100;
+    var clampedPercentage = Math.max(0, Math.min(100, percentage));
+
+    return `${parseInt(clampedPercentage, 10).toFixed(2)}%`;
+}
+
+function handlePokemonSelect(pokemon) {
     console.log(pokemon);
 
     showSelectedPokemon();
+    renderPokemonAttacks(pokemon);
 
-    selectedLvlDetails.textContent = pokemon.level;
     selectedXpDetails.textContent = pokemon.xp;
+    selectedLvlDetails.textContent = calculateLevel(pokemon.xp);
+
     selectedHappinessDetails.textContent = pokemon.happiness;
     selectedHealthDetails.textContent = `${pokemon.hp} / ${pokemon.status?.hp || '?'}`;
     selectedNameDetails.textContent = pokemon.species;
 
     selectedImgDetails.innerHTML = `<img src="${pokemon.imgUrl}" alt="${pokemon.species}">`;
+
+    selectedHealthBarDetails.style.width = updateLifeBar(pokemon);
+    selectedXpBarDetails.style.width = updateXpBar(pokemon);
+
+    loadAttackType();
 
     currentPokemon = pokemon;
 
@@ -207,7 +293,7 @@ function alterPokemonHappiness(quantity) {
 
 function addPokemon() {
     characterState.capturedPokemon.push({
-        species: 'NEW POKÉMON',
+        species: 'Pokémon Name',
         gender: '',
         type1: '',
         type2: '',
@@ -228,7 +314,10 @@ function addPokemon() {
             spd: 5
         },
         attacks: [
-            { atkName: '', atkType: '', pp: 10, pwr: 40, haveEffect: false, effect: '' }
+            { name: 'Attack name', type: '', pp: 0, pwr: 0, haveEffect: false, effect: 'Regular Damage' },
+            { name: 'Attack name', type: '', pp: 0, pwr: 0, haveEffect: false, effect: 'Regular Damage' },
+            { name: 'Attack name', type: '', pp: 0, pwr: 0, haveEffect: false, effect: 'Regular Damage' },
+            { name: 'Attack name', type: '', pp: 0, pwr: 0, haveEffect: false, effect: 'Regular Damage' },
         ],
         imgUrl: 'https://raw.githubusercontent.com/ryanmferreira/pokedesk-vanilla/refs/heads/main/assets/icons/pokeball.svg'
     });
@@ -276,6 +365,17 @@ function isPokemonInTeam() {
     };
 }
 
+function getAttackElements(index) {
+    return {
+        name: document.getElementById(`attack-name-${index}`),
+        pwr: document.getElementById(`attack-power-${index}`),
+        pp: document.getElementById(`attack-power-points-${index}`),
+        haveEffect: document.getElementById(`attack-have-effect-${index}`),
+        effect: document.getElementById(`attack-effect-${index}`),
+        type: document.getElementById(`attack-type-${index}`)
+    };
+}
+
 function updatePokemonInfo() {
     if (!currentPokemon) {
         return;
@@ -306,7 +406,21 @@ function updatePokemonInfo() {
         spd: parseInt(pokemonStatusSpd?.value, 10)
     };
 
-    selectPokemon(currentPokemon);
+    if (currentPokemon.attacks) {
+        for (const attack of currentPokemon.attacks) {
+            var index = currentPokemon.attacks.indexOf(attack);
+            const els = getAttackElements(index);
+
+            if (els.name) attack.name = els.name.value;
+            if (els.pwr) attack.pwr = parseInt(els.pwr.value, 10) || 0;
+            if (els.pp) attack.pp = parseInt(els.pp.value, 10) || 0;
+            if (els.effect) attack.effect = els.effect.value;
+            if (els.type) attack.type = els.type.value;
+            if (els.haveEffect) attack.haveEffect = els.haveEffect.checked;
+        }
+    }
+
+    handlePokemonSelect(currentPokemon);
 
     renderCapturedPokemons();
     renderPokemonTeam();
@@ -372,6 +486,20 @@ function openEditPokemon() {
     if (pokemonStatusSpDef) pokemonStatusSpDef.value = currentPokemon.status?.spDef;
     if (pokemonStatusSpd) pokemonStatusSpd.value = currentPokemon.status?.spd;
 
+    if (currentPokemon.attacks) {
+        for (const attack of currentPokemon.attacks) {
+            var index = currentPokemon.attacks.indexOf(attack);
+            const els = getAttackElements(index);
+
+            if (els.name) els.name.value = attack.name || '';
+            if (els.pwr) els.pwr.value = attack.pwr ?? 0;
+            if (els.pp) els.pp.value = attack.pp ?? 0;
+            if (els.effect) els.effect.value = attack.effect || '';
+            if (els.type) els.type.value = attack.type || '';
+            if (els.haveEffect) els.haveEffect.checked = Boolean(attack.haveEffect);
+        }
+    }
+
     updateLevel();
 
     if (editPokemonModal) {
@@ -430,8 +558,10 @@ pokeLevelVelocity?.addEventListener('change', () => {
 /* ==========================================================================
    LEVEL & XP RULES
    ========================================================================== */
-function getMinimumXp(level, velocity) {
-    switch (velocity) {
+function getXpQuantity(level, velocity) {
+    var levelSpeed = velocity.toLowerCase();
+
+    switch (levelSpeed) {
         case "fast": return 0.8 * level * level;
         case "medium": return 1.0 * level * level;
         case "slow": return 1.25 * level * level;
@@ -442,11 +572,14 @@ function getMinimumXp(level, velocity) {
 }
 
 function calculateLevel(xpTotal) {
-    if (!pokeLevelVelocity) return 5;
-    const velocity = pokeLevelVelocity.value.toLowerCase();
+    if (!pokeLevelVelocity) {
+        return 5
+    };
+
+    var velocity = pokeLevelVelocity.value.toLowerCase();
     const xpInput = parseFloat(xpTotal) || 0;
 
-    const baseXpForLvl5 = getMinimumXp(5, velocity);
+    const baseXpForLvl5 = getXpQuantity(5, velocity);
     const totalXp = xpInput + baseXpForLvl5;
 
     let level = 5;

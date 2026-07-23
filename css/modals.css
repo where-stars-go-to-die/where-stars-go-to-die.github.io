@@ -1,4 +1,6 @@
-/*   BASE MODAL STRUCTURE */
+/* ==========================================================================
+   BASE MODAL STRUCTURE
+   ========================================================================== */
 
 .modal-overlay {
     position: fixed;
@@ -32,8 +34,10 @@
     color: var(--input-contrast-color);
 }
 
+/* ==========================================================================
+   MODAL 1: INVENTORY
+   ========================================================================== */
 
-/*   MODAL 1: INVENTORY */
 .inventory-section {
     gap: 0 !important;
     display: flex;
@@ -99,50 +103,110 @@
     padding: 0;
 }
 
+/* ==========================================================================
+   MODAL 2: POKÉMON MANAGEMENT
+   ========================================================================== */
 
-/*   MODAL 2: POKÉMON MANAGEMENT */
+.select-pokemon {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
 .pokemon-detail-panel {
+    display: grid;
+    grid-template-columns: 72px 2fr 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+.detail-box {
+    border: 2px dashed var(--input-contrast-color);
+    padding: 8px 10px;
+    display: flex;
+    box-sizing: border-box;
+    background-color: transparent;
+    min-width: 0;
+}
+
+.avatar-box {
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.avatar-box img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.exp-box {
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.exp-box .column:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.exp-box .column.align-center {
+    border-left: 2px dashed var(--input-contrast-color);
+    padding-left: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-box {
+    justify-content: center;
+    text-align: center;
+}
+
+.panel-label {
+    font-size: 11px;
+    color: var(--input-contrast-color);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.panel-value {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.select-pokemon .action-row {
     display: flex;
     flex-direction: row;
     gap: 12px;
     width: 100%;
 }
 
-.detail-box {
-    border: 2px dashed var(--input-contrast-color);
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
+.select-pokemon .action-row button {
+    flex: 1 1 0px;
+    text-align: center;
     justify-content: center;
-    gap: 12px;
-}
-
-.avatar-box {
-    max-width: 64px;
-    flex-shrink: 0;
-}
-
-.exp-box {
-    flex-grow: 1;
-}
-
-.panel-label {
-    font-size: 12px;
-    color: var(--input-contrast-color);
-    font-weight: bold;
-}
-
-.panel-value {
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 4px;
 }
 
 .captured-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    max-height: 280px;
     overflow-y: auto;
     padding-right: 4px;
 }
@@ -151,7 +215,7 @@
     display: flex;
     flex-direction: row;
     border: 2px dashed var(--input-contrast-color);
-    padding: 12px;
+    padding: 8px 12px;
     gap: 12px;
     align-items: center;
     background-color: transparent;
@@ -159,39 +223,103 @@
     width: 100%;
     font-family: inherit;
     text-align: left;
-    color: inherit;
     outline: none;
     box-sizing: border-box;
+}
+
+.captured-item .avatar-box {
+    width: 54px;
+    height: 54px;
 }
 
 .captured-item.selected {
     border: 2px solid var(--red-color);
 }
 
-.captured-item .static-row {
-    width: 100%;
-    gap: 12px;
-}
-
-.item-avatar {
-    width: 64px;
-    height: 64px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.05);
-    flex-shrink: 0;
-}
-
 .item-info {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
     min-width: 0;
 }
 
 .poke-item-name {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
+}
+
+.poke-item-lvl {
+    font-weight: bold;
+    font-size: 11px;
+    color: var(--input-contrast-color);
+}
+
+.tiny-text {
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+/* Slots de Pokémon da Página Principal (Injetado via JS) */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.pokemon-slot {
+    display: flex;
+    flex-direction: row;
+    border: 2px dashed var(--input-contrast-color);
+    padding: 8px 12px;
+    gap: 12px;
+    align-items: center;
+    background-color: transparent;
+    font-family: inherit;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.pokemon-slot.active-slot {
+    cursor: pointer;
+}
+
+.pokemon-slot.empty-slot {
+    border-style: dotted;
+    opacity: 0.6;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: default;
+    min-height: 74px;
+}
+
+.pokemon-slot .avatar-box {
+    width: 54px;
+    height: 54px;
+}
+
+.pokemon-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.health-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.health-bar-fill {
+    height: 100%;
+    background-color: var(--green-color);
+    transition: width 0.3s ease;
 }
 
 .green-bar .health-bar-fill {
@@ -203,7 +331,10 @@
 }
 
 
-/*   MODAL 3: EDIT POKÉMON (BOSS FINAL) */
+/* ==========================================================================
+   MODAL 3: EDIT POKÉMON (BOSS FINAL)
+   ========================================================================== */
+
 .edit-pokemon-card {
     width: 85%;
     max-width: 1100px;
@@ -263,11 +394,14 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     background-color: var(--red-color);
-    color: var(--white-color);
     text-align: center;
     font-weight: bold;
     font-size: 11px;
     padding: 6px 0;
+}
+
+.status-table-header span {
+    color: var(--white-color) !important;
 }
 
 .status-table-body {
@@ -315,14 +449,16 @@
     cursor: pointer;
 }
 
-/*   BUTTONS & UTILITIES */
+
+/* ==========================================================================
+   GLOBAL BUTTONS & UTILITIES WITHIN MODALS
+   ========================================================================== */
+
 .action-row {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
     gap: 12px;
     width: 100%;
-    justify-content: space-between;
 }
 
 .btn-dark {
@@ -336,7 +472,10 @@
 }
 
 
-/*   RESPONSIVE LAYOUT (MOBILE) */
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
 @media screen and (max-width: 950px) {
     .edit-pokemon-body {
         grid-template-columns: 1fr;
@@ -345,6 +484,20 @@
 
     .attacks-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .pokemon-detail-panel {
+        grid-template-columns: 70px 1fr 1fr;
+    }
+
+    .exp-box {
+        grid-column: span 2;
+    }
+
+    .stat-box {
+        grid-column: span 1;
     }
 }
 
@@ -358,27 +511,31 @@
         max-height: 35vh;
     }
 
-    .pokemon-detail-panel {
-        flex-wrap: wrap;
-        gap: 12px;
+    .captured-grid,
+    .pokemon-grid {
+        grid-template-columns: 1fr;
+        max-height: auto;
     }
+}
 
-    .avatar-box {
-        max-width: 64px;
-        max-height: 64px;
+@media screen and (max-width: 500px) {
+    .pokemon-detail-panel {
+        grid-template-columns: 60px 1fr;
     }
 
     .exp-box {
-        width: calc(100% - 80px);
+        grid-column: span 1;
     }
 
     .stat-box {
-        flex-grow: 1;
-        width: calc(33.33% - 8px);
+        grid-column: span 2;
     }
 
-    .captured-grid {
-        grid-template-columns: 1fr;
-        max-height: auto;
+    .select-pokemon .action-row {
+        flex-wrap: wrap;
+    }
+
+    .select-pokemon .action-row button {
+        min-width: 100%;
     }
 }

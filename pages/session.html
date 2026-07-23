@@ -8,11 +8,11 @@
 
     <link rel="shortcut icon" href="../favicon.svg" type="image/x-icon">
 
+    <link rel="stylesheet" href="../css/global-styles.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/session.css">
     <link rel="stylesheet" href="../css/modals.css">
-    <link rel="stylesheet" href="../css/global-styles.css">
 </head>
 
 <body>
@@ -197,7 +197,7 @@
         </div>
     </div>
 
-    <!-- Modal de Gerenciamento de Pokémon -->
+    <!-- Pokémon Management Modal -->
     <div id="pokemon-management-modal" class="modal-overlay hidden">
         <div class="modal-card container">
 
@@ -213,21 +213,29 @@
                 <div class="pokemon-detail-panel">
                     <div id="detail-img" class="detail-box avatar-box"></div>
 
-                    <div class="detail-box exp-box column">
-                        <span class="panel-label">EXP - <span id="detail-exp-num">~</span></span>
-                        <div class="health-bar-container green-bar">
-                            <div id="detail-exp-bar" class="health-bar-fill" style="width: 75%;"></div>
+
+                    <div class="detail-box exp-box static-row">
+                        <div class="column">
+                            <span class="panel-label">EXP - <span id="detail-exp-num">~</span></span>
+                            <div class="health-bar-container green-bar">
+                                <div id="detail-exp-bar" class="health-bar-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="column align-center">
+                            <span class="panel-label">LVL</span>
+                            <span id="detail-lvl-num" class="panel-value">~</span>
                         </div>
                     </div>
 
                     <div class="detail-box stat-box column align-center">
-                        <span class="panel-label">LVL</span>
-                        <span id="detail-lvl-num" class="panel-value">~</span>
-                    </div>
-
-                    <div class="detail-box stat-box column align-center">
                         <span class="panel-label">HP</span>
-                        <span id="detail-hp-text" class="panel-value">~ / ~</span>
+                        <div>
+                            <span id="detail-hp-text" class="panel-value">~ / ~</span>
+                            <div class="health-bar-container green-bar">
+                                <div id="detail-life-bar" class="health-bar-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="detail-box stat-box column align-center">
@@ -414,8 +422,8 @@
                         <div class="status-table-body">
                             <input id="poke-status-hp" type="number" value="35">
                             <input id="poke-status-atk" type="number" value="35">
-                            <input id="poke-status-sp-atk" type="number" value="35">
                             <input id="poke-status-def" type="number" value="35">
+                            <input id="poke-status-sp-atk" type="number" value="35">
                             <input id="poke-status-sp-def" type="number" value="35">
                             <input id="poke-status-spd" type="number" value="35">
                         </div>
@@ -425,140 +433,8 @@
                     <h3 class="section-title red-text" style="margin-top: 12px;">ATTACKS</h3>
                     <hr class="red-text">
 
-                    <div class="attacks-grid">
+                    <div id="attacks-grid" class="attacks-grid">
 
-                        <!-- Attack 1 -->
-                        <div class="attack-card">
-                            <div class="static-row">
-                                <div class="column flex-grow">
-                                    <h6>ATTACK</h6>
-                                    <input type="text" class="inventory-item-input">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PWR</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PP</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                            </div>
-
-                            <div class="column">
-                                <h6>Attack Type</h6>
-                                <select id="attack-type-1" class="custom-select-red">
-                                    <option selected disabled value="">Select Type...</option>
-                                </select>
-                            </div>
-
-                            <hr class="red-text">
-
-                            <h6>HAVE EFFECT?</h6>
-                            <div class="static-row align-center">
-                                <input type="checkbox" class="custom-checkbox" unchecked
-                                    onchange="toggleEffectInput(this)">
-                                <input type="text" class="inventory-item-input">
-                            </div>
-                        </div>
-
-                        <!-- Attack 2 -->
-                        <div class="attack-card">
-                            <div class="static-row">
-                                <div class="column flex-grow">
-                                    <h6>ATTACK</h6>
-                                    <input type="text" class="inventory-item-input">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PWR</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PP</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h6>Attack Type</h6>
-                                <select id="attack-type-2" class="custom-select-red">
-                                    <option selected disabled value="">Select Type...</option>
-                                </select>
-                            </div>
-
-                            <hr class="red-text">
-
-                            <h6>HAVE EFFECT?</h6>
-                            <div class="static-row align-center">
-                                <input type="checkbox" class="custom-checkbox" unchecked
-                                    onchange="toggleEffectInput(this)">
-                                <input type="text" class="inventory-item-input">
-                            </div>
-                        </div>
-
-                        <!-- Attack 3 -->
-                        <div class="attack-card">
-                            <div class="static-row">
-                                <div class="column flex-grow">
-                                    <h6>ATTACK</h6>
-                                    <input type="text" class="inventory-item-input">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PWR</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PP</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h6>Attack Type</h6>
-                                <select id="attack-type-3" class="custom-select-red">
-                                    <option selected disabled value="">Select Type...</option>
-                                </select>
-                            </div>
-
-                            <hr class="red-text">
-
-                            <h6>HAVE EFFECT?</h6>
-                            <div class="static-row align-center">
-                                <input type="checkbox" class="custom-checkbox" unchecked
-                                    onchange="toggleEffectInput(this)">
-                                <input type="text" class="inventory-item-input">
-                            </div>
-                        </div>
-
-                        <!-- Attack 4 -->
-                        <div class="attack-card">
-                            <div class="static-row">
-                                <div class="column flex-grow">
-                                    <h6>ATTACK</h6>
-                                    <input type="text" class="inventory-item-input">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PWR</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                                <div class="column" style="width: 40px;">
-                                    <h6>PP</h6>
-                                    <input type="text" class="inventory-item-input text-center">
-                                </div>
-                            </div>
-                            <div class="column">
-                                <h6>Attack Type</h6>
-                                <select id="attack-type-4" class="custom-select-red">
-                                    <option selected disabled value="">Select Type...</option>
-                                </select>
-                            </div>
-
-                            <hr class="red-text">
-
-                            <h6>HAVE EFFECT?</h6>
-                            <div class="static-row align-center">
-                                <input type="checkbox" class="custom-checkbox" unchecked
-                                    onchange="toggleEffectInput(this)">
-                                <input type="text" class="inventory-item-input">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -569,7 +445,7 @@
             <div class="action-row">
                 <button onclick="document.getElementById('edit-pokemon-modal').classList.add('hidden')"
                     class="btn-dark flex-grow">Cancel</button>
-                <button id="save-pokemon-btn" class="btn-red flex-grow">Confirm</button>
+                <button id="save-pokemon-btn" class="btn-red flex-grow">Save</button>
             </div>
 
         </div>
