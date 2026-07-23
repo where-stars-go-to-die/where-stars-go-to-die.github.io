@@ -97,7 +97,7 @@
 .pokemon-slot {
     border: 2px dashed var(--input-contrast-color);
     display: flex;
-    padding: 4px;
+    padding: 2px;
     align-items: center;
 
     background-color: transparent;
@@ -183,12 +183,6 @@
 }
 
 @media screen and (max-width: 900px) {
-    .pokemon-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media screen and (max-width: 800px) {
     .main-grid {
         grid-template-columns: 1fr;
     }
@@ -217,8 +211,14 @@
     }
 }
 
+@media screen and (max-width: 720px) {
+    .pokemon-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
 @media screen and (max-width: 400px) {
     .pokemon-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 }

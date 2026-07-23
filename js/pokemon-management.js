@@ -87,7 +87,7 @@ function renderPokemonTeam() {
             <div class="column pokemon-info">
                 <div class="static-row align-between">
                     <h5>${pokemonInfo.species}</h5>
-                    <span>LVL ${calculateLevel(pokemonInfo.xp)}</span>
+                    <span>LVL ${calculateLevel(pokemonInfo.xp, pokemonInfo.levelSpeed)}</span>
                 </div>
                 <div class="health-bar-container">
                     <div class="health-bar-fill" style="width: ${updateLifeBar(pokemonInfo)}"></div>
@@ -135,7 +135,7 @@ function renderCapturedPokemons() {
             <div class="item-info column">
                 <div class="static-row align-between">
                     <span class="poke-item-name">${pokemonInfo.species}</span>
-                    <span class="poke-item-lvl">LVL ${calculateLevel(pokemonInfo.xp)}</span>
+                    <span class="poke-item-lvl">LVL ${calculateLevel(pokemonInfo.xp, pokemonInfo.levelSpeed)}</span>
                     
                 </div>
                 <div class="health-bar-container green-bar">
@@ -210,7 +210,9 @@ function debugPokemon() {
 }
 
 function updateLifeBar(pokemon) {
-    const percentage = Math.round((pokemon.hp / pokemon.status.hp) * 100);
+    const maxHp = pokemon?.status?.hp || 1;
+    const currentHp = pokemon?.hp || 0;
+    const percentage = Math.max(0, Math.min(100, Math.round((currentHp / maxHp) * 100)));
 
     return `${percentage}%`;
 }
@@ -218,7 +220,7 @@ function updateLifeBar(pokemon) {
 function updateXpBar(pokemon) {
     var currentXp = pokemon.xp || 0;
     var currentVel = pokemon.levelSpeed || 'fast';
-    var currentLevel = calculateLevel(currentXp);
+    var currentLevel = calculateLevel(currentXp, currentVel);
 
     var baseXp = getXpQuantity(5, currentVel);
 
@@ -226,13 +228,14 @@ function updateXpBar(pokemon) {
     var xpNextLevel = getXpQuantity(currentLevel + 1, currentVel) - baseXp;
 
     var xpInCurrentLevel = currentXp - xpCurrentLevel;
-
     var xpSpanForNextLevel = xpNextLevel - xpCurrentLevel;
+
+    if (xpSpanForNextLevel <= 0) return '100.00%';
 
     var percentage = (xpInCurrentLevel / xpSpanForNextLevel) * 100;
     var clampedPercentage = Math.max(0, Math.min(100, percentage));
 
-    return `${parseInt(clampedPercentage, 10).toFixed(2)}%`;
+    return `${clampedPercentage.toFixed(2)}%`;
 }
 
 function handlePokemonSelect(pokemon) {
@@ -242,7 +245,7 @@ function handlePokemonSelect(pokemon) {
     renderPokemonAttacks(pokemon);
 
     selectedXpDetails.textContent = pokemon.xp;
-    selectedLvlDetails.textContent = calculateLevel(pokemon.xp);
+    selectedLvlDetails.textContent = calculateLevel(pokemon.xp, pokemon.levelSpeed);
 
     selectedHappinessDetails.textContent = pokemon.happiness;
     selectedHealthDetails.textContent = `${pokemon.hp} / ${pokemon.status?.hp || '?'}`;
@@ -297,7 +300,7 @@ function addPokemon() {
         gender: '',
         type1: '',
         type2: '',
-        levelSpeed: '',
+        levelSpeed: 'fast',
         xp: 0,
         hp: 0,
         capturedBy: '',
@@ -393,7 +396,7 @@ function updatePokemonInfo() {
     currentPokemon.imgUrl = pokemonImage?.value;
 
     currentPokemon.xp = parseInt(totalXP?.value, 10);
-    currentPokemon.level = calculateLevel(currentPokemon.xp);
+    currentPokemon.level = calculateLevel(currentPokemon.xp, currentPokemon.levelSpeed);
     currentPokemon.happiness = parseInt(pokemonHapiness?.textContent, 10);
     currentPokemon.hp = parseInt(pokemonHealth?.value, 10);
 
@@ -571,16 +574,12 @@ function getXpQuantity(level, velocity) {
     }
 }
 
-function calculateLevel(xpTotal) {
-    if (!pokeLevelVelocity) {
-        return 5
-    };
+function calculateLevel(xpTotal, velocityParam = null) {
+    var velocity = (velocityParam || pokeLevelVelocity?.value || 'fast').toLowerCase();
+    var xpInput = parseInt(xpTotal, 10) || 0;
 
-    var velocity = pokeLevelVelocity.value.toLowerCase();
-    const xpInput = parseFloat(xpTotal) || 0;
-
-    const baseXpForLvl5 = getXpQuantity(5, velocity);
-    const totalXp = xpInput + baseXpForLvl5;
+    var baseXp = getXpQuantity(5, velocity);
+    var totalXp = baseXp + xpInput;
 
     let level = 5;
 
@@ -597,7 +596,10 @@ function calculateLevel(xpTotal) {
 }
 
 function updateLevel() {
-    if (!totalXP) return;
+    if (!totalXP) {
+        return;
+    }
+
     const currentXP = totalXP.value;
     const level = calculateLevel(currentXP);
 

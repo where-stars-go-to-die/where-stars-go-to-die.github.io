@@ -16,6 +16,11 @@ const baseHp = 0;
 // Player Attributes
 const currentHpElement = document.getElementById('hp-display');
 
+// Input
+const characterRace = document.getElementById('character-race');
+const characterClass = document.getElementById('character-class');
+const characterName = document.getElementById('character-name');
+
 const resistanceElement = document.getElementById('attr-resistance');
 const strengthElement = document.getElementById('attr-strength');
 const minElement = document.getElementById('attr-mind');
