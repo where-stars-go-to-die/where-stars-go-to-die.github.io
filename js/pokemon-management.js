@@ -158,6 +158,7 @@ function renderCapturedPokemons() {
 
 function selectPokemon(pokemon) {
     console.log(pokemon);
+
     showSelectedPokemon();
 
     selectedLvlDetails.textContent = pokemon.level;
@@ -169,6 +170,8 @@ function selectPokemon(pokemon) {
     selectedImgDetails.innerHTML = `<img src="${pokemon.imgUrl}" alt="${pokemon.species}">`;
 
     currentPokemon = pokemon;
+
+    updateTeamButton();
 }
 
 function handlePokemonEdit() {
@@ -245,14 +248,23 @@ function addToTeam() {
     if (inTeam) {
         characterState.team.splice(index, 1);
         console.log("Removido do time:", currentPokemon.species);
-        addToTeamButton.textContent = "Add to Team";
     } else {
         characterState.team.push(currentPokemon);
         console.log("Adicionado ao time:", currentPokemon.species);
-        addToTeamButton.textContent = "Remove from Team";
     }
 
+    updateTeamButton();
     renderPokemonTeam()
+}
+
+function updateTeamButton() {
+    const { inTeam, index } = isPokemonInTeam();
+
+    if (inTeam) {
+        addToTeamButton.textContent = "Remove from Team";
+    } else {
+        addToTeamButton.textContent = "Add to Team";
+    }
 }
 
 function isPokemonInTeam() {
