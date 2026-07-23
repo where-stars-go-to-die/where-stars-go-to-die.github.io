@@ -224,7 +224,17 @@
     border: 2px dashed var(--input-contrast-color);
     background-color: transparent;
     color: var(--input-contrast-color);
-    font-family: inherit;
+    font-weight: bold;
+    height: 32px;
+    outline: none;
+    cursor: pointer;
+}
+
+.custom-select-red {
+    padding: var(--default-tiny-button-padding);
+    border: 2px dashed var(--red-color) !important;
+    color: var(--red-color) !important;
+    background-color: transparent;
     font-weight: bold;
     height: 32px;
     outline: none;

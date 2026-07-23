@@ -8,11 +8,11 @@
 
     <link rel="shortcut icon" href="../favicon.svg" type="image/x-icon">
 
-    <link rel="stylesheet" href="../css/global-styles.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/session.css">
     <link rel="stylesheet" href="../css/modals.css">
+    <link rel="stylesheet" href="../css/global-styles.css">
 </head>
 
 <body>
@@ -321,14 +321,26 @@
                         </div>
                     </div>
 
-                    <div class="column">
-                        <h6>SPECIE</h6>
-                        <input type="text" class="inventory-item-input">
+                    <div class="static-row">
+                        <div class="column">
+                            <h6>SPECIE</h6>
+                            <input id="poke-specie" type="text" class="inventory-item-input">
+                        </div>
+
+                        <div class="column">
+                            <h6>GENDER</h6>
+                            <select id="poke-gender" class="custom-select">
+                                <option selected disabled value="">Select gender...</option>
+                                <option selected>Male</option>
+                                <option selected>Female</option>
+                                <option selected>No Gender</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="column">
                         <h6>CAPTURED BY</h6>
-                        <select id="pokeball-captured" class="custom-select">
+                        <select id="poke-pokeball-used" class="custom-select">
                             <option selected disabled value="">Select a Pokeball...</option>
                         </select>
                     </div>
@@ -336,11 +348,11 @@
                     <div class="static-row">
                         <div class="column">
                             <h6>EQUIPPED ITEM</h6>
-                            <input type="text" class="inventory-item-input">
+                            <input id="poke-item" type="text" class="inventory-item-input">
                         </div>
                         <div class="column">
                             <h6>CURRENT HP</h6>
-                            <input type="number" class="inventory-item-input">
+                            <input id="poke-hp" type="number" class="inventory-item-input">
                         </div>
                     </div>
 
@@ -360,9 +372,9 @@
                         <div class="column align-center">
                             <h6>HAPPINESS</h6>
                             <div class="static-row counter-control">
-                                <button class="btn-qty-control">-</button>
-                                <span id="pokemon-happiness" class="panel-value">1</span>
-                                <button class="btn-qty-control">+</button>
+                                <button class="btn-qty-control" onclick="alterPokemonHappiness(-1)">-</button>
+                                <span id="poke-happiness" class="panel-value">1</span>
+                                <button class="btn-qty-control" onclick="alterPokemonHappiness(+1)">+</button>
                             </div>
                         </div>
                     </div>
@@ -388,7 +400,7 @@
                         <div class="column flex-grow" style="justify-content: space-between;">
                             <div class="column">
                                 <h6>TOTAL XP</h6>
-                                <input id="total-xp" type="number" class="inventory-item-input">
+                                <input id="poke-total-xp" type="number" class="inventory-item-input">
                             </div>
                             <div class="column">
                                 <h6>CONFIRM ADDITION?</h6>
@@ -422,12 +434,12 @@
                             <span>SPD</span>
                         </div>
                         <div class="status-table-body">
-                            <input type="number" value="35">
-                            <input type="number" value="35">
-                            <input type="number" value="35">
-                            <input type="number" value="35">
-                            <input type="number" value="35">
-                            <input type="number" value="35">
+                            <input id="poke-status-hp" type="number" value="35">
+                            <input id="poke-status-atk" type="number" value="35">
+                            <input id="poke-status-sp-atk" type="number" value="35">
+                            <input id="poke-status-def" type="number" value="35">
+                            <input id="poke-status-sp-def" type="number" value="35">
+                            <input id="poke-status-spd" type="number" value="35">
                         </div>
                     </div>
 
@@ -456,7 +468,7 @@
 
                             <div class="column">
                                 <h6>Attack Type</h6>
-                                <select id="attack-type-1" class="custom-select">
+                                <select id="attack-type-1" class="custom-select-red">
                                     <option selected disabled value="">Select Type...</option>
                                 </select>
                             </div>
@@ -489,7 +501,7 @@
                             </div>
                             <div class="column">
                                 <h6>Attack Type</h6>
-                                <select id="attack-type-2" class="custom-select">
+                                <select id="attack-type-2" class="custom-select-red">
                                     <option selected disabled value="">Select Type...</option>
                                 </select>
                             </div>
@@ -522,7 +534,7 @@
                             </div>
                             <div class="column">
                                 <h6>Attack Type</h6>
-                                <select id="attack-type-3" class="custom-select">
+                                <select id="attack-type-3" class="custom-select-red">
                                     <option selected disabled value="">Select Type...</option>
                                 </select>
                             </div>
@@ -555,7 +567,7 @@
                             </div>
                             <div class="column">
                                 <h6>Attack Type</h6>
-                                <select id="attack-type-4" class="custom-select">
+                                <select id="attack-type-4" class="custom-select-red">
                                     <option selected disabled value="">Select Type...</option>
                                 </select>
                             </div>
@@ -579,7 +591,7 @@
             <div class="action-row">
                 <button onclick="document.getElementById('edit-pokemon-modal').classList.add('hidden')"
                     class="btn-dark flex-grow">Cancel</button>
-                <button class="btn-red flex-grow">Confirm</button>
+                <button id="save-pokemon-btn" class="btn-red flex-grow">Confirm</button>
             </div>
 
         </div>

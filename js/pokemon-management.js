@@ -3,11 +3,41 @@
    ========================================================================== */
 
 // Pokémon Attributtes
-const pokeLevelUpVelocity = document.getElementById('poke-level-velocity');
-const totalXPInput = document.getElementById('total-xp');
+let currentPokemon = null;
+
 const xpToAddInput = document.getElementById('xp-to-add');
 const currentLvlDisplay = document.getElementById('current-level');
-const pokemonHapiness = document.getElementById('pokemon-happiness');
+
+// Text
+const pokemonHapiness = document.getElementById('poke-happiness');
+
+// Select (no value args)
+const pokeLevelVelocity = document.getElementById('poke-level-velocity');
+
+const pokemonType1 = document.getElementById('poke-type-1');
+const pokemonType2 = document.getElementById('poke-type-2');
+
+const pokemonGender = document.getElementById('poke-gender');
+
+const pokemonPokeball = document.getElementById('poke-pokeball-used');
+
+const pokemonNature = document.getElementById('poke-nature');
+const pokemonAbility = document.getElementById('poke-ability');
+
+// Input
+const pokemonSpecie = document.getElementById('poke-specie');
+
+const totalXP = document.getElementById('poke-total-xp');
+const pokemonHealth = document.getElementById('poke-hp');
+
+const pokemonItem = document.getElementById('poke-item');
+
+const pokemonStatusHp = document.getElementById('poke-status-hp');
+const pokemonStatusAtk = document.getElementById('poke-status-atk');
+const pokemonStatusSpAtk = document.getElementById('poke-status-sp-atk');
+const pokemonStatusDef = document.getElementById('poke-status-def');
+const pokemonStatusSpDef = document.getElementById('poke-status-sp-def');
+const pokemonStatusSpd = document.getElementById('poke-status-spd');
 
 // Selected Pokemon Info
 const selectedNameDetails = document.getElementById('manage-pokemon-name');
@@ -16,7 +46,6 @@ const selectedXpDetails = document.getElementById('detail-exp-num');
 const selectedHappinessDetails = document.getElementById('detail-happy-text');
 const selectedHealthDetails = document.getElementById('detail-hp-text');
 const selectedImgDetails = document.getElementById('detail-img');
-
 
 /* ==========================================================================
    CAPTURED POKEMON MANAGEMENT
@@ -34,15 +63,15 @@ function renderPokemonBasicInfo() {
             <div class="detail-box avatar-box"><img src="${poke.imgUrl}" alt="${poke.species}"></div>
             <div class="item-info column">
                 <div class="static-row align-between">
-                    <span class="poke-item-name">${poke.species || 'POKÉMON NAME'}</span>
-                    <span class="poke-item-lvl">LVL ${poke.level || 1}</span>
+                    <span class="poke-item-name">${poke.species}</span>
+                    <span class="poke-item-lvl">LVL ${poke.level}</span>
                 </div>
                 <div class="health-bar-container green-bar">
                     <div class="health-bar-fill" style="width: 100%;"></div>
                 </div>
                 <div class="static-row align-between tiny-text">
-                    <span>HP 12 / 12</span>
-                    <span>HAPPINESS ${poke.happiness || 0} / 10</span>
+                    <span>HP<br> ${poke.hp} / ${poke.status.hp}</span>
+                    <span>HAPPINESS<br> ${poke.happiness} / 10</span>
                 </div>
             </div>
         `;
@@ -54,8 +83,6 @@ function renderPokemonBasicInfo() {
         pokemonContainerElement.appendChild(pokemon);
     }
 }
-
-let currentPokemon = null;
 
 function selectPokemon(pokemon) {
     console.log(pokemon);
@@ -74,6 +101,7 @@ function selectPokemon(pokemon) {
 
 function handlePokemonEdit() {
     console.log("Editing: ", currentPokemon.species);
+    openEditPokemon();
 }
 
 function handlePokemonDelete() {
@@ -88,16 +116,24 @@ function handlePokemonDelete() {
 }
 
 function alterPokemonHappiness(quantity) {
-    // pokemonHapiness
-}
+    let pokeHappiness = parseInt(pokemonHapiness.textContent, 10);
 
-function updatePokemonInfo() {
+    pokeHappiness += quantity;
 
+    if (pokeHappiness > 10) {
+        pokeHappiness = 10;
+    }
+    else if (pokeHappiness < 0) {
+        pokeHappiness = 0;
+    }
+
+    pokemonHapiness.textContent = pokeHappiness;
 }
 
 function addPokemon() {
     characterState.capturedPokemon.push({
         species: 'NEW POKÉMON',
+        gender: '',
         level: 5,
         type1: '',
         type2: '',
@@ -131,7 +167,6 @@ function addPokemon() {
 /* ==========================================================================
    MODAL AND UI CONTROL
    ========================================================================== */
-
 function showSelectedPokemon() {
     document.querySelector('.select-pokemon').style.display = 'flex';
 }
@@ -153,10 +188,69 @@ function closePokemon() {
 }
 
 function openEditPokemon() {
+    if (!currentPokemon) return;
+
+    if (pokemonSpecie) pokemonSpecie.value = currentPokemon.species || '';
+    if (pokemonGender) pokemonGender.value = currentPokemon.gender || '';
+    if (pokeLevelVelocity) pokeLevelVelocity.value = currentPokemon.levelSpeed || 'medium';
+    if (pokemonType1) pokemonType1.value = currentPokemon.type1 || '';
+    if (pokemonType2) pokemonType2.value = currentPokemon.type2 || '';
+    if (pokemonPokeball) pokemonPokeball.value = currentPokemon.capturedBy || '';
+    if (pokemonNature) pokemonNature.value = currentPokemon.nature || '';
+    if (pokemonAbility) pokemonAbility.value = currentPokemon.ability || '';
+    if (pokemonItem) pokemonItem.value = currentPokemon.item || '';
+    if (pokemonHapiness) pokemonHapiness.textContent = currentPokemon.happiness || 1;
+
+    if (totalXP) totalXP.value = currentPokemon.xp || 0;
+    if (pokemonHealth) pokemonHealth.value = currentPokemon.hp || 0;
+
+    if (pokemonStatusHp) pokemonStatusHp.value = currentPokemon.status?.hp || 5;
+    if (pokemonStatusAtk) pokemonStatusAtk.value = currentPokemon.status?.atk || 5;
+    if (pokemonStatusSpAtk) pokemonStatusSpAtk.value = currentPokemon.status?.spAtk || 5;
+    if (pokemonStatusDef) pokemonStatusDef.value = currentPokemon.status?.def || 5;
+    if (pokemonStatusSpDef) pokemonStatusSpDef.value = currentPokemon.status?.spDef || 5;
+    if (pokemonStatusSpd) pokemonStatusSpd.value = currentPokemon.status?.spd || 5;
+
+    updateLevel();
+
     if (editPokemonModal) {
         editPokemonModal.classList.remove('hidden');
         updateAllEffectInputs();
     }
+}
+
+// Finally update Pokémon Info :D
+function updatePokemonInfo() {
+    if (!currentPokemon) return;
+
+    currentPokemon.species = pokemonSpecie?.value || 'NEW POKÉMON';
+    currentPokemon.gender = pokemonGender?.value || '';
+    currentPokemon.levelSpeed = pokeLevelVelocity?.value || 'medium';
+    currentPokemon.type1 = pokemonType1?.value || '';
+    currentPokemon.type2 = pokemonType2?.value || '';
+    currentPokemon.capturedBy = pokemonPokeball?.value || '';
+    currentPokemon.nature = pokemonNature?.value || '';
+    currentPokemon.ability = pokemonAbility?.value || '';
+    currentPokemon.item = pokemonItem?.value || '';
+
+    currentPokemon.xp = parseInt(totalXP?.value, 10) || 0;
+    currentPokemon.level = calculateLevel(currentPokemon.xp);
+    currentPokemon.happiness = parseInt(pokemonHapiness?.textContent, 10) || 1;
+    currentPokemon.hp = parseInt(pokemonHealth?.value, 10) || 0;
+
+    currentPokemon.status = {
+        hp: parseInt(pokemonStatusHp?.value, 10) || 0,
+        atk: parseInt(pokemonStatusAtk?.value, 10) || 0,
+        spAtk: parseInt(pokemonStatusSpAtk?.value, 10) || 0,
+        def: parseInt(pokemonStatusDef?.value, 10) || 0,
+        spDef: parseInt(pokemonStatusSpDef?.value, 10) || 0,
+        spd: parseInt(pokemonStatusSpd?.value, 10) || 0
+    };
+
+    selectPokemon(currentPokemon);
+    renderPokemonBasicInfo();
+
+    closeEditPokemon();
 }
 
 function closeEditPokemon() {
@@ -190,11 +284,15 @@ document.getElementById('edit-selected-pokemon')?.addEventListener('click', () =
     handlePokemonEdit();
 });
 
+document.getElementById('save-pokemon-btn')?.addEventListener('click', () => {
+    updatePokemonInfo();
+});
+
 document.getElementById('add-xp')?.addEventListener('click', () => {
     addXP();
 });
 
-pokeLevelUpVelocity?.addEventListener('change', () => {
+pokeLevelVelocity?.addEventListener('change', () => {
     updateLevel();
 });
 
@@ -213,8 +311,8 @@ function getMinimumXp(level, velocity) {
 }
 
 function calculateLevel(xpTotal) {
-    if (!pokeLevelUpVelocity) return 5;
-    const velocity = pokeLevelUpVelocity.value.toLowerCase();
+    if (!pokeLevelVelocity) return 5;
+    const velocity = pokeLevelVelocity.value.toLowerCase();
     const xpInput = parseFloat(xpTotal) || 0;
 
     const baseXpForLvl5 = getMinimumXp(5, velocity);
@@ -235,8 +333,8 @@ function calculateLevel(xpTotal) {
 }
 
 function updateLevel() {
-    if (!totalXPInput) return;
-    const currentXP = totalXPInput.value;
+    if (!totalXP) return;
+    const currentXP = totalXP.value;
     const level = calculateLevel(currentXP);
 
     if (currentLvlDisplay) {
@@ -245,14 +343,14 @@ function updateLevel() {
 }
 
 function addXP() {
-    if (!totalXPInput || !xpToAddInput) {
+    if (!totalXP || !xpToAddInput) {
         return;
     }
 
-    const currentTotal = parseInt(totalXPInput.value, 10) || 0;
+    const currentTotal = parseInt(totalXP.value, 10) || 0;
     const addedXP = parseInt(xpToAddInput.value, 10) || 0;
 
-    totalXPInput.value = currentTotal + addedXP;
+    totalXP.value = currentTotal + addedXP;
     xpToAddInput.value = '';
 
     updateLevel();

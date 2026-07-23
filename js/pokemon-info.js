@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     populateSelect("poke-ability", abilities);
     populateSelect("poke-nature", natures);
     populateSelect("poke-level-velocity", levelVelocity);
-    populateSelect("pokeball-captured", pokeballs);
+    populateSelect("poke-pokeball-used", pokeballs);
 
     for (let i = 1; i <= 4; i++) {
         let attackTypeId = `attack-type-${i}`;
