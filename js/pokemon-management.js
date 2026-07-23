@@ -240,8 +240,10 @@ function addToTeam() {
         return;
     }
 
-    if (isPokemonInTeam()) {
-        characterState.team.splice(isPokemonInTeam(), 1);
+    const { inTeam, index } = isPokemonInTeam();
+
+    if (inTeam) {
+        characterState.team.splice(index, 1);
         console.log("Removido do time:", currentPokemon.species);
         addToTeamButton.textContent = "Add to Team";
     } else {
@@ -254,9 +256,12 @@ function addToTeam() {
 }
 
 function isPokemonInTeam() {
-    let index = characterState.team.indexOf(currentPokemon);
-    
-    return index !== -1 ? true : false;
+    const index = characterState.team.indexOf(currentPokemon);
+
+    return {
+        inTeam: index !== -1,
+        index: index
+    };
 }
 
 function updatePokemonInfo() {
